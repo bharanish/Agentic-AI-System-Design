@@ -13,6 +13,9 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain_core.tools.retriever import create_retriever_tool
 from langchain.agents import create_agent
+from langchain.agents.middleware import ModelCallLimitMiddleware
+from langchain.agents.middleware import ToolCallLimitMiddleware
+
 
 
 CHUNK_SIZE = 2500
@@ -54,8 +57,11 @@ def build_agent(vector_store: Chroma):
            "Reference specific file and function names. "
            "If not found say 'I could not find that in the codebase'."
        ),
+       middleware=[
+           ModelCallLimitMiddleware(run_limit=5, exit_behavior="end"),
+           ToolCallLimitMiddleware(tool_name="search_codebase", run_limit=2, exit_behavior="end")
+       ]
    )
-
 
 
 
