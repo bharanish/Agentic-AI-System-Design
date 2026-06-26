@@ -6,11 +6,15 @@ embeddings:
  provider: openai             
  model: text-embedding-3-small
 
+rag:
+ mode: hybrid           # semantic | hybrid
+
 vector_store:
  provider: qdrant
+ retrieval_mode: hybrid  # dense | sparse | hybrid
 
 qdrant:
- collection_name: codebase
+ collection_name: search_codebase
 
 chromadb:
  persist_dir: .chromadb/
